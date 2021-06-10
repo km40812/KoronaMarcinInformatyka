@@ -1,0 +1,89 @@
+
+from openpyxl import Workbook # otwacie biblotek 
+ 
+from openpyxl.drawing.image import Image
+
+wb = Workbook() 
+ 
+sheet = wb.active # aktywny arkusz 
+
+sheet["A1"] = 'raport ilosci wad'
+
+sheet["A2"] = 'dane' # dodanie opisu w A1 w exel
+
+n = input("wprowadź ilosc wad w zestawieniu w liscie i nacisnij Enter ") # operator okresla liczbe danych 
+
+a = int(n)
+
+lista = []
+
+nazwa =[]
+
+for i in range(a):
+    
+    print("podaj ilosc wad", i+1)
+    
+    B = input ()
+    b = int(B)
+ 
+    print("podaj nazwe wady", i+1)
+    
+    q = input ()
+  
+   
+    lista.append(b)
+    
+    nazwa.append(q)
+    
+    
+
+
+pary = zip(lista, nazwa)  #sparowanie dany do sortowania 
+slownik = dict(pary)  # utworzenie słownika 
+
+
+
+S = sorted(slownik.items()) #sortowanie słownika zawartosci po kluczu 
+
+
+S1 = dict(S) # ponownie słownik 
+print('s1', S1)
+wada = str(S1.keys()) # koljeno wady od najmnieszej wartosci 
+nazwa2 = S1.keys()
+wartosc = str(S1.values()) # odpowiednie wartosci 
+lista2 = S1.values()
+
+sheet["A3"] = wada # lista wad
+sheet["A4"] = wartosc # lista wartosc odpowidnych do wad
+
+# utworzenie wykresu  obu list i zapis do jpg 
+import matplotlib.pyplot as pyplot #bibloteka do wykresu 
+
+pyplot.figure(figsize=((10,8)))
+
+pyplot.bar(lista2, nazwa2, label = 'Bar 2', color = 'red',  width = 1, )
+
+pyplot.ylabel('ilosc wad', fontsize = 16)
+
+
+pyplot.xlabel('nazwa wad', fontsize = 16)
+
+
+pyplot.savefig('wykres.png') #wykres jpeg
+
+
+img = Image('wykres.png')
+sheet.add_image(img, 'D1')
+
+wb.save("raport.xlsx") # zapis pliku na dysku
+
+
+"""
+autorzy  
+Kaczmarek Andrzej 
+Karabin Kamil
+Korona Marcin
+Kulinicz Dawid
+ 
+
+"""
